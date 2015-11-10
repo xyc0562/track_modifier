@@ -2,23 +2,21 @@ module TrackModifier
   module Base
     extend ActiveSupport::Concern
 
-    module InstanceMethods
-      # If current user is nil, don't do anything
-      def track_created_by
-        if (uid = RequestStore.store[:current_user_id])
-          self.created_by_id = uid
-          self.updated_by_id = uid
-        end
-      end
-
-      def track_updated_by
-        if (uid = RequestStore.store[:current_user_id])
-          self.updated_by_id = uid unless self.destroyed?
-        end
+    # If current user is nil, don't do anything
+    def track_created_by
+      if (uid = RequestStore.store[:current_user_id])
+        self.created_by_id = uid
+        self.updated_by_id = uid
       end
     end
 
-    module ClassMethods
+    def track_updated_by
+      if (uid = RequestStore.store[:current_user_id])
+        self.updated_by_id = uid unless self.destroyed?
+      end
+    end
+
+    class_methods do
       # Add tracker hooks
       def trackable(options = {})
         if self.respond_to?(:acting_as) && self.acting_as.respond_to?(:created_by)
