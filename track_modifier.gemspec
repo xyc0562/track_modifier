@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails"
-  s.add_dependency 'request_store', '~> 1.2.0'
+  s.add_dependency 'request_store'
 
   s.add_development_dependency "sqlite3"
 end
